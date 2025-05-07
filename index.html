@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobHunt - Find Your Dream Job</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 25px 25px, rgba(255, 255, 255, 0.1) 2%, transparent 0%),
+                radial-gradient(circle at 75px 75px, rgba(255, 255, 255, 0.1) 2%, transparent 0%);
+            background-size: 100px 100px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .logo-container {
+            text-align: center;
+            padding: 2rem 0;
+            margin-bottom: 1rem;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo-icon {
+            font-size: 3rem;
+            color: white;
+            background: linear-gradient(45deg, #1a2a6c, #b21f1f);
+            padding: 1.2rem;
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover .logo-icon {
+            transform: rotate(360deg);
+        }
+
+        .logo-text {
+            font-size: 3rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ffffff, #e0e0e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            letter-spacing: 2px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 0;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #ffffff, #e0e0e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .search-box {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin-bottom: 3rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            backdrop-filter: blur(10px);
+        }
+
+        .search-input-container {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #1976d2;
+            box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
+        }
+
+        .search-box button {
+            padding: 1rem 2rem;
+            background: linear-gradient(45deg, #1a2a6c, #b21f1f);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-box button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                120deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .search-box button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .search-box button:hover::before {
+            left: 100%;
+        }
+
+        .search-box button i {
+            margin-right: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .search-box button:hover i {
+            transform: scale(1.2);
+        }
+
+        .recent-searches {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-top: 0.5rem;
+            z-index: 10;
+        }
+
+        .recent-search-item {
+            padding: 0.8rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .recent-search-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .recent-search-item i {
+            color: #666;
+            margin-right: 0.5rem;
+        }
+
+        .recent-search-item .fa-times {
+            color: #999;
+            padding: 0.3rem;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        .recent-search-item .fa-times:hover {
+            background-color: #e0e0e0;
+            color: #666;
+        }
+
+        .popular-searches {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: white;
+        }
+
+        .popular-searches span {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            margin: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .popular-searches span:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card i {
+            font-size: 2.5rem;
+            color: #1976d2;
+            margin-bottom: 1rem;
+            background: rgba(25, 118, 210, 0.1);
+            padding: 1rem;
+            border-radius: 50%;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: #1a237e;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* CV Upload Section Styles */
+        .cv-section {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin: 2rem auto;
+            max-width: 800px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+
+        .cv-section h2 {
+            color: #1a237e;
+            margin-bottom: 1.5rem;
+        }
+
+        .cv-upload-container {
+            border: 2px dashed #1976d2;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cv-upload-container:hover {
+            background: rgba(25, 118, 210, 0.05);
+        }
+
+        .cv-upload-container i {
+            font-size: 3rem;
+            color: #1976d2;
+            margin-bottom: 1rem;
+        }
+
+        .cv-upload-container p {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .cv-upload-container input[type="file"] {
+            display: none;
+        }
+
+        .cv-upload-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(45deg, #1a2a6c, #b21f1f);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .cv-upload-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .cv-analysis {
+            display: none;
+            margin-top: 2rem;
+            text-align: left;
+        }
+
+        .cv-analysis h3 {
+            color: #1a237e;
+            margin-bottom: 1rem;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .skill-tag {
+            display: inline-block;
+            padding: 5px 15px;
+            background: linear-gradient(45deg, #1a2a6c, #b21f1f);
+            color: white;
+            border-radius: 20px;
+            margin: 5px;
+            font-size: 14px;
+        }
+
+        .recommended-jobs {
+            margin-top: 2rem;
+        }
+
+        .job-match {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .job-match h4 {
+            color: #1a237e;
+            margin-bottom: 0.5rem;
+        }
+
+        .match-score {
+            color: #1976d2;
+            font-weight: bold;
+        }
+
+        #results {
+            margin-top: 2rem;
+        }
+
+        /* Loading Animation Styles */
+        .loader-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 5px solid #4169E1;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loader-content {
+            text-align: center;
+            color: white;
+        }
+
+        .loader-text {
+            margin-top: 1rem;
+            font-size: 1.1rem;
+        }
+
+        /* Filter Options */
+        .filter-options {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin: 1rem auto 2rem;
+            max-width: 800px;
+            backdrop-filter: blur(10px);
+        }
+
+        .filter-group {
+            margin-bottom: 1rem;
+        }
+
+        .filter-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .filter-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            font-size: 1rem;
+            color: #333;
+            background-color: white;
+        }
+
+        .filter-group select:focus {
+            outline: none;
+            border-color: #1976d2;
+            box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
+        }
+
+        /* Scroll to Top Button */
+        .scroll-to-top {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #1a2a6c, #b21f1f);
+            color: white;
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .scroll-to-top:hover {
+            transform: translateY(-5px) rotate(360deg);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+        }
+
+        .tooltiptext {
+            visibility: hidden;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Error Message Styles */
+        .error-message {
+            color: #dc3545;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .search-box {
+                flex-direction: column;
+                padding: 1.5rem;
+            }
+
+            .search-box input,
+            .search-box button {
+                width: 100%;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .logo-text {
+                font-size: 2rem;
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Add these styles to your existing CSS */
+        .filter-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-btn i {
+            font-size: 1.1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .filter-btn:hover i {
+            transform: rotate(180deg);
+        }
+
+        /* Update the tooltip for the filter button */
+        .filter-btn .tooltiptext {
+            bottom: 130%;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .filter-btn:hover .tooltiptext {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Animation -->
+    <div class="loader-container">
+        <div class="loader-content">
+            <div class="loader"></div>
+            <div class="loader-text">Searching across multiple job platforms...</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="logo-container">
+            <div class="logo">
+                <i class="fas fa-briefcase logo-icon"></i>
+                <span class="logo-text">JobHunt</span>
+            </div>
+        </div>
+
+        <div class="header">
+            <h1>Search thousands of job opportunities<br>from top companies worldwide</h1>
+        </div>
+
+        <div class="search-box">
+            <div class="search-input-container">
+                <input type="text" id="jobTitle" placeholder="Job title or keywords">
+                <div class="recent-searches" id="jobTitleRecent"></div>
+            </div>
+            <div class="search-input-container">
+                <input type="text" id="location" placeholder="Location">
+                <div class="recent-searches" id="locationRecent"></div>
+            </div>
+            <button onclick="toggleFilters()" class="tooltip filter-btn">
+                <i class="fas fa-filter"></i> Filters
+                <span class="tooltiptext">Show advanced filters</span>
+            </button>
+            <button onclick="performSearch()">
+                <i class="fas fa-search"></i> Search Jobs
+            </button>
+        </div>
+
+        <!-- Popular Searches -->
+        <div class="popular-searches">
+            <p style="margin-bottom: 0.5rem; font-size: 0.9rem;">Popular Searches:</p>
+            <span onclick="quickSearch('Software Engineer', 'Remote')">Software Engineer - Remote</span>
+            <span onclick="quickSearch('Data Analyst', 'India')">Data Analyst - India</span>
+            <span onclick="quickSearch('Web Developer', 'Bangalore')">Web Developer - Bangalore</span>
+            <span onclick="quickSearch('Project Manager', 'Delhi')">Project Manager - Delhi</span>
+        </div>
+
+        <!-- Filter Options -->
+        <div class="filter-options" id="filterOptions">
+            <div class="filter-group">
+                <label>Job Type</label>
+                <select id="jobType">
+                    <option value="">All Types</option>
+                    <option value="full-time">Full Time</option>
+                    <option value="part-time">Part Time</option>
+                    <option value="contract">Contract</option>
+                    <option value="internship">Internship</option>
+                    <option value="remote">Remote</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Experience Level</label>
+                <select id="experienceLevel">
+                    <option value="">All Levels</option>
+                    <option value="entry">Entry Level</option>
+                    <option value="mid">Mid Level</option>
+                    <option value="senior">Senior Level</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Date Posted</label>
+                <select id="datePosted">
+                    <option value="">Any Time</option>
+                    <option value="1">Last 24 hours</option>
+                    <option value="7">Last 7 days</option>
+                    <option value="30">Last 30 days</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="features">
+            <div class="feature-card">
+                <i class="fas fa-search"></i>
+                <h3>Smart Search</h3>
+                <p>Search across multiple job platforms to find the perfect opportunity</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-building"></i>
+                <h3>Top Companies</h3>
+                <p>Access jobs from leading companies in your industry</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-bolt"></i>
+                <h3>Real-time Updates</h3>
+                <p>Get the latest job postings as soon as they're available</p>
+            </div>
+        </div>
+
+        <!-- CV Upload Section -->
+        <div class="cv-section">
+            <h2>Upload Your CV for Smart Job Matches</h2>
+            <div class="cv-upload-container" onclick="document.getElementById('cvFile').click()">
+                <i class="fas fa-file-upload"></i>
+                <p>Drag and drop your CV here or click to browse</p>
+                <p style="font-size: 0.9rem; color: #666;">Supported format: PDF</p>
+                <input type="file" id="cvFile" accept=".pdf" onchange="handleCVUpload(event)">
+                <div id="uploadedFileName" style="display: none; margin-top: 1rem; padding: 0.5rem; background: rgba(25, 118, 210, 0.1); border-radius: 8px;">
+                    <i class="fas fa-file-pdf" style="color: #dc3545;"></i>
+                    <span id="fileName" style="margin-left: 0.5rem; color: #1976d2;"></span>
+                    <button onclick="removeUploadedFile(event)" style="margin-left: 1rem; background: none; border: none; color: #666; cursor: pointer;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="location-input" style="margin-top: 1rem;">
+                <input type="text" id="cvLocation" placeholder="Enter your preferred location" style="padding: 0.8rem; width: 100%; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 1rem;">
+                <button onclick="submitCV()" class="cv-upload-btn" style="width: 100%;">
+                    <i class="fas fa-paper-plane"></i> Submit CV
+                </button>
+            </div>
+            <div class="cv-analysis" id="cvAnalysis">
+                <h3>CV Analysis</h3>
+                <div class="skills-list" id="skillsList"></div>
+                <div class="recommended-jobs" id="recommendedJobs"></div>
+            </div>
+        </div>
+
+        <div id="results"></div>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <div class="scroll-to-top" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js"></script>
+    <script>
+        // Store recent searches
+        let recentSearches = {
+            jobs: JSON.parse(localStorage.getItem('recentJobSearches') || '[]'),
+            locations: JSON.parse(localStorage.getItem('recentLocationSearches') || '[]')
+        };
+
+        function addRecentSearch(type, value) {
+            if (!value) return;
+            const searches = recentSearches[type];
+            const index = searches.indexOf(value);
+            if (index > -1) {
+                searches.splice(index, 1);
+            }
+            searches.unshift(value);
+            if (searches.length > 5) searches.pop();
+            localStorage.setItem(`recent${type.charAt(0).toUpperCase() + type.slice(1)}Searches`, JSON.stringify(searches));
+            recentSearches[type] = searches;
+        }
+
+        function showRecentSearches(inputId, type) {
+            const recentDiv = document.getElementById(`${inputId}Recent`);
+            const searches = recentSearches[type];
+            if (searches.length === 0) return;
+
+            let html = '';
+            searches.forEach(search => {
+                html += `
+                    <div class="recent-search-item" onclick="useRecentSearch('${inputId}', '${search}')">
+                        <span><i class="fas fa-history"></i> ${search}</span>
+                        <i class="fas fa-times" onclick="removeRecentSearch(event, '${type}', '${search}')"></i>
+                    </div>
+                `;
+            });
+            recentDiv.innerHTML = html;
+            recentDiv.style.display = 'block';
+        }
+
+        function useRecentSearch(inputId, value) {
+            document.getElementById(inputId).value = value;
+            document.getElementById(`${inputId}Recent`).style.display = 'none';
+        }
+
+        function removeRecentSearch(event, type, value) {
+            event.stopPropagation();
+            const searches = recentSearches[type];
+            const index = searches.indexOf(value);
+            if (index > -1) {
+                searches.splice(index, 1);
+                localStorage.setItem(`recent${type.charAt(0).toUpperCase() + type.slice(1)}Searches`, JSON.stringify(searches));
+                showRecentSearches(type === 'jobs' ? 'jobTitle' : 'location', type);
+            }
+        }
+
+        // Quick Search Function
+        function quickSearch(job, location) {
+            document.getElementById('jobTitle').value = job;
+            document.getElementById('location').value = location;
+            performSearch();
+        }
+
+        // Toggle Filters
+        function toggleFilters() {
+            const filterOptions = document.getElementById('filterOptions');
+            filterOptions.style.display = filterOptions.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Scroll to Top
+        window.onscroll = function() {
+            const scrollButton = document.querySelector('.scroll-to-top');
+            if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
+                scrollButton.style.display = 'flex';
+            } else {
+                scrollButton.style.display = 'none';
+            }
+        };
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Add event listeners for recent searches
+        document.getElementById('jobTitle').addEventListener('focus', () => showRecentSearches('jobTitle', 'jobs'));
+        document.getElementById('location').addEventListener('focus', () => showRecentSearches('location', 'locations'));
+
+        // Close recent searches when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-input-container')) {
+                document.querySelectorAll('.recent-searches').forEach(el => el.style.display = 'none');
+            }
+        });
+
+        function hideError(input) {
+            input.style.borderColor = '';
+            const errorMessage = input.parentNode.querySelector('.error-message');
+            if (errorMessage) {
+                errorMessage.remove();
+            }
+        }
+
+        async function performSearch() {
+            // Remove any existing error messages
+            hideError(document.getElementById('jobTitle'));
+            hideError(document.getElementById('location'));
+
+            // Get input values
+            const jobTitle = document.getElementById('jobTitle').value.trim();
+            const location = document.getElementById('location').value.trim();
+
+            // Basic validation
+            let isValid = true;
+            if (!jobTitle) {
+                showError(document.getElementById('jobTitle'), 'Please enter a job title');
+                isValid = false;
+            }
+            if (!location) {
+                showError(document.getElementById('location'), 'Please enter a location');
+                isValid = false;
+            }
+            if (!isValid) return;
+
+            // Show loading animation
+            const loaderContainer = document.querySelector('.loader-container');
+            loaderContainer.style.display = 'flex';
+
+            try {
+                // Add to recent searches
+                addRecentSearch('jobs', jobTitle);
+                addRecentSearch('locations', location);
+
+                // Get filter values
+                const filters = {
+                    jobType: document.getElementById('jobType').value,
+                    experienceLevel: document.getElementById('experienceLevel').value,
+                    datePosted: document.getElementById('datePosted').value
+                };
+
+                // Make API request
+                const response = await fetch('/api/search', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        query: jobTitle,
+                        location: location,
+                        filters: filters
+                    })
+                });
+
+                const data = await response.json();
+
+                // Show filter options if we have results
+                document.getElementById('filterOptions').style.display = data.jobs.length > 0 ? 'block' : 'none';
+
+                // Display results
+                const resultsDiv = document.getElementById('results');
+                
+                if (data.error) {
+                    resultsDiv.innerHTML = `
+                        <div class="no-jobs-message">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <h2>Error</h2>
+                            <p>${data.error}</p>
+                            ${data.suggestions ? `
+                                <div class="suggestions">
+                                    <p>Suggested searches:</p>
+                                    <ul>
+                                        ${data.suggestions.map(suggestion => `
+                                            <li><a href="#" onclick="applySuggestion('${suggestion}')">${suggestion}</a></li>
+                                        `).join('')}
+                                    </ul>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                    return;
+                }
+
+                if (!data.jobs || data.jobs.length === 0) {
+                    resultsDiv.innerHTML = `
+                        <div class="no-jobs-message">
+                            <i class="fas fa-search"></i>
+                            <h2>No Jobs Found</h2>
+                            <p>Try different search terms or location</p>
+                            <button onclick="clearSearch()" style="margin-top: 1rem;">Clear Search</button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let html = `
+                    <div class="results-container">
+                        <div class="results-header">
+                            <h2>Found ${data.total_jobs} Jobs</h2>
+                            ${data.message ? `<p class="results-message">${data.message}</p>` : ''}
+                        </div>
+                        <div class="job-cards">
+                `;
+
+                data.jobs.forEach(job => {
+                    html += `
+                        <div class="job-card">
+                            <div class="job-card-header">
+                                <div class="job-card-title">
+                                    <h3>${job.title}</h3>
+                                    <span class="company-name">${job.company}</span>
+                                </div>
+                                <div class="job-card-meta">
+                                    <span class="location"><i class="fas fa-map-marker-alt"></i> ${job.location}</span>
+                                    <span class="source">${job.source}</span>
+                                </div>
+                            </div>
+                            <div style="margin-top: 1rem; text-align: right;">
+                                <a href="${job.url}" target="_blank" style="text-decoration: none;">
+                                    <button style="padding: 0.6rem 1.2rem; background: #1976d2; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.9rem;">
+                                        View Job <i class="fas fa-external-link-alt" style="margin-left: 0.5rem;"></i>
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += `
+                        </div>
+                    </div>
+                `;
+                
+                resultsDiv.innerHTML = html;
+                
+            } catch (error) {
+                console.error('Error:', error);
+                const resultsDiv = document.getElementById('results');
+                resultsDiv.innerHTML = `
+                    <div class="no-jobs-message">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <h2>Error</h2>
+                        <p>An error occurred while searching for jobs. Please try again.</p>
+                        <button onclick="clearSearch()" style="margin-top: 1rem;">Try Again</button>
+                    </div>
+                `;
+            } finally {
+                // Hide loading message
+                loaderContainer.style.display = 'none';
+            }
+        }
+
+        function clearSearch() {
+            document.getElementById('jobTitle').value = '';
+            document.getElementById('location').value = '';
+            document.getElementById('jobType').value = '';
+            document.getElementById('experienceLevel').value = '';
+            document.getElementById('datePosted').value = '';
+            document.getElementById('results').innerHTML = '';
+            document.getElementById('filterOptions').style.display = 'none';
+        }
+
+        function showError(input, message) {
+            input.style.borderColor = '#dc3545';
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.textContent = message;
+            input.parentNode.appendChild(errorDiv);
+        }
+
+        function applySuggestion(suggestion) {
+            document.getElementById('jobTitle').value = suggestion;
+            performSearch();
+        }
+
+        // CV Upload and Analysis Functions
+        let uploadedFile = null;
+
+        async function handleCVUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (file.type !== 'application/pdf') {
+                alert('Please upload a PDF file');
+                return;
+            }
+
+            uploadedFile = file;
+            
+            // Show uploaded file name
+            const uploadedFileName = document.getElementById('uploadedFileName');
+            const fileName = document.getElementById('fileName');
+            fileName.textContent = file.name;
+            uploadedFileName.style.display = 'block';
+        }
+
+        function removeUploadedFile(event) {
+            event.stopPropagation();
+            uploadedFile = null;
+            document.getElementById('cvFile').value = '';
+            document.getElementById('uploadedFileName').style.display = 'none';
+        }
+
+        async function submitCV() {
+            if (!uploadedFile) {
+                alert('Please upload a CV first');
+                return;
+            }
+
+            const location = document.getElementById('cvLocation').value.trim();
+            if (!location) {
+                alert('Please enter your preferred location');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('cv', uploadedFile);
+            formData.append('location', location);
+
+            // Show loading animation
+            const loaderContainer = document.querySelector('.loader-container');
+            loaderContainer.style.display = 'flex';
+
+            try {
+                const response = await fetch('/api/analyze-cv', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+
+                // Display CV analysis
+                const cvAnalysis = document.getElementById('cvAnalysis');
+                cvAnalysis.style.display = 'block';
+
+                // Display skills
+                const skillsList = document.getElementById('skillsList');
+                skillsList.innerHTML = data.skills.map(skill => 
+                    `<span class="skill-tag">${skill}</span>`
+                ).join('');
+
+                // Display recommended jobs
+                const recommendedJobs = document.getElementById('recommendedJobs');
+                recommendedJobs.innerHTML = `
+                    <h3>Recommended Jobs in ${location}</h3>
+                    ${data.recommended_jobs.map(job => `
+                        <div class="job-match">
+                            <h4>${job.title}</h4>
+                            <p>${job.company} - ${job.location}</p>
+                            <p class="match-score">Match Score: ${job.match_score}%</p>
+                            <a href="${job.url}" target="_blank" style="text-decoration: none;">
+                                <button style="padding: 0.6rem 1.2rem; background: #1976d2; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.9rem; margin-top: 0.5rem;">
+                                    View Job <i class="fas fa-external-link-alt" style="margin-left: 0.5rem;"></i>
+                                </button>
+                            </a>
+                        </div>
+                    `).join('')}
+                `;
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while analyzing your CV. Please try again.');
+            } finally {
+                // Hide loading animation
+                loaderContainer.style.display = 'none';
+            }
+        }
+
+        // Add fadeIn animation
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(-10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(styleSheet);
+    </script>
+</body>
+</html>
