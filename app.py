@@ -7,14 +7,16 @@ import time
 import urllib.parse
 import os
 import json
-from functools import lru_cache
 import asyncio
 import aiohttp
 from datetime import datetime, timedelta
 import re
-from werkzeug.utils import secure_filename
 from PyPDF2 import PdfReader
-import csv
+import logging
+
+# Configure logging for Railway
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__, static_folder='.', static_url_path='')
 CORS(app)
@@ -548,4 +550,5 @@ def analyze_cv():
 if __name__ == '__main__':
     import os
     port = int(os.environ.get('PORT', 5000))
+    logger.info(f"Starting JobHunt app on port {port}")
     app.run(host='0.0.0.0', port=port, debug=False)
