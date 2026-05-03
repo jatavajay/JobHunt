@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: jobhunt
+    runtime: python
+    repo: https://github.com/jatavajay/JobHunt
+    plan: free
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: FLASK_ENV
+        value: production
+      - key: FLASK_DEBUG
+        value: false
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --worker-class sync --timeout 120 app:app
+    healthCheckPath: /health
+    autoDeploy: true
